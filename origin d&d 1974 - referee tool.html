@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origin D&D 1974 - referee tool</title>
+
+<style>
+
+body {
+    background-color: rgb(33, 33, 33);
+    color: white;
+}
+
+p {
+    margin: 0px;
+    display: inline-block;
+}
+
+button {margin-right: 5px;}
+
+input {
+    background: none;
+    border: none;
+    border-bottom: 1px solid white;
+    color: white;
+    text-align: center;
+}
+
+textarea {
+    background: none;
+    color: white;
+    border: 1px solid white;
+    resize: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a5a5a5;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d1d1;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div style="display: flexbox;
+            flex-direction: column;">
+
+    <p style="font-size: 40px; 
+              color: white;
+              margin-bottom: 10px;">
+
+        Origin D&D 1974
+    
+    </p>
+    <p>referee tool created by crawfordproservices™</p>
+
+    <div style="margin-bottom: 20px;">
+
+        <label for="" style="font-size: 30px;">Adventure:</label>
+        <input type="text" style="width: 400px; font-size: 20px;">
+
+    </div>
+
+    <div style="margin-bottom: 15px;
+                margin-left: 10px;
+                border: 1px solid white;
+                padding: 10px;
+                width: fit-content;">
+
+            <p>Day:</p>
+            <input id="time-day" type="text" style="max-width: 30px;">
+
+            <button onclick="increment_time('day')" style="margin-left: 5px;">+</button>
+
+            <p style="margin-left: 5px;">Hour:</p>
+            <input id="time-hour" type="text" style="max-width: 30px;">
+
+            <button onclick="increment_time('hour')" style="margin-left: 5px;">+</button>
+
+    </div>
+
+    <div style="border: 1px solid white;
+                padding: 10px;
+                width: fit-content;
+                margin-bottom: 15px;">
+
+            <p>Miles:</p>
+            <input type="text" style="width: 80px;">
+
+            <p>XP:</p>
+            <input type="text" style="width: 80px;">
+
+            <p>Money:</p>
+            <input type="text" style="width: 80px;">
+        
+    </div>
+
+    <div style="margin-bottom: 15px;
+                border: 1px solid white;
+                padding: 10px;
+                width: 460px;">
+
+        <p>Dice:</p>
+        <input id="dice_multiplier" style="width: 35px;
+                                            margin-right: 10px;">
+
+        <button onclick="roll_dice(4)">d4</button>
+        <button onclick="roll_dice(6)">d6</button>
+        <button onclick="roll_dice(8)">d8</button>
+        <button onclick="roll_dice(10)">d10</button>
+        <button onclick="roll_dice(12)">d12</button>
+        <button onclick="roll_dice(20)">d20</button>
+        <button onclick="roll_dice(100)">d100</button>
+
+        <p>Roll:</p>
+        <p id="roll_result"></p>
+
+    </div>
+
+    <div style="margin-bottom: 15px;">
+
+        <select style="width: fit-content; 
+                        padding: 5px;
+                        margin-right: 10px;"
+                    
+                 id="character-list">
+
+            <option>new character</option>
+
+        </select>
+
+        <button onclick="character_scroll('left')">◄</button>
+        <button onclick="character_scroll('right')">►</button>
+
+        <button onclick="new_character()" style="margin-left: 10px;">new</button>
+        <button onclick="delete_character()">delete</button>
+        <button onclick="save_character()">save</button>
+        <button>load</button>
+
+    </div>
+
+    <div style="display: flex;
+                flex-direction: row;
+                margin-bottom: 15px;">
+
+        <div style="margin-right: 10px;
+                    border: 1px solid white;
+                    padding: 10px;
+                    width: fit-content;">
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Name:</label>
+                <input id="character-name" type="text" style="max-width: 150px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Race:</label>
+                <input id="character-class" type="text" style="max-width: 120px;">
+                
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Class:</label>
+                <input id="character-class" type="text" style="max-width: 120px;">
+                
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Alignment:</label>
+                <input id="character-alignment" type="text" style="max-width: 70px;">
+
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Level:</label>
+                <input id="character-level" type="text" style="max-width: 30px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>HP:</label>
+                <input type="text" style="max-width: 30px;">
+                <p>/</p>
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+        
+        </div>
+
+        <div style="margin-right: 10px;
+                    border: 1px solid white;
+                    padding: 10px;
+                    width: fit-content;
+                    height: fit-content;">
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Strength:</label>
+                <input type="text" style="max-width: 30px; margin-right: 10px;">
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Constitution:</label>
+                <input type="text" style="max-width: 30px; margin-right: 10px;">
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Dexterity:</label>
+                <input type="text" style="max-width: 30px; margin-right: 10px;">
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Intelligence:</label>
+                <input type="text" style="max-width: 30px; margin-right: 10px;">
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Wisdom:</label>
+                <input type="text" style="max-width: 30px; margin-right: 10px;">
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+
+            <div style="margin-bottom: 5px;">
+
+                <label>Charisma:</label>
+                <input type="text" style="max-width: 30px; margin-right: 10px;">
+                <input type="text" style="max-width: 30px;">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: row;">
+
+        <div style="margin-right: 10px;
+                    margin-bottom: 15px;
+                    width: fit-content;">
+
+            <p style="display: block; margin-bottom: 15px;">Equipment</p>
+
+            <textarea cols="50" rows="10"></textarea>
+
+        </div>
+
+        <div style="margin-right: 10px;
+                    margin-bottom: 15px;
+                    width: fit-content;">
+    
+                <p style="display: block; margin-bottom: 15px;">Skills</p>
+
+                <textarea cols="50" rows="10"></textarea>
+
+        </div>
+
+    </div>
+
+    <div style="margin-right: 10px;
+                    margin-bottom: 15px;
+                    width: fit-content;">
+
+                <p style="display: block; margin-bottom: 15px;">Notes</p>
+
+                <textarea cols="50" rows="10"></textarea>
+
+    </div>
+
+</div>
+
+<script>
+
+    function roll_dice(dice) {
+
+        let roll
+        let rolls = []
+        let sum = 0
+
+        for (let i = 0; i < document.getElementById('dice_multiplier').value; i++) {
+
+            roll = Math.floor(Math.random() * dice) + 1
+
+            rolls.push(roll)
+
+        }
+
+        rolls.forEach(item => {
+                sum += item
+            })
+
+        document.getElementById("roll_result").innerText = sum
+
+        rolls = []
+
+    }
+
+    function increment_time(time) {
+
+        switch(time) {
+
+            case 'hour':
+
+                if (document.getElementById("time-hour").value == 24) {
+
+                    document.getElementById("time-hour").value = 1
+                    document.getElementById("time-day").value = parseInt(document.getElementById("time-day").value) + 1
+
+                    break
+
+                } else {document.getElementById("time-hour").value = parseInt(document.getElementById("time-hour").value) + 1}
+
+                break
+
+
+            case 'day':
+
+                document.getElementById("time-day").value = parseInt(document.getElementById("time-day").value) + 1
+
+                break
+
+        }
+    }
+
+    function character_scroll(direction) {
+
+        switch(direction) {
+
+            case 'left':
+
+                if (document.getElementById("character-list").selectedIndex > 0) {
+
+                    document.getElementById("character-list").selectedIndex -= 1
+                    
+                    break
+
+                } else {break}
+
+            case 'right':
+
+                if (document.getElementById("character-list").selectedIndex < document.getElementById("character-list").childElementCount - 1) {
+
+                    document.getElementById("character-list").selectedIndex += 1
+
+                    break
+
+                } else {break}
+
+        }
+
+    }
+
+    function new_character() {
+
+        current_list_amount = document.getElementById("character-list").childElementCount
+    
+        current_list_amount += 1
+
+        new_option = document.createElement("option")
+
+        new_option.innerHTML = "new character"
+
+        document.getElementById("character-list").appendChild(new_option)
+
+        document.getElementById("character-list").selectedIndex = document.getElementById("character-list").childElementCount - 1
+    }
+
+    function delete_character() {
+
+        let select = document.getElementById('character-list')
+        let options = select.getElementsByTagName('option')
+
+        if (select.childElementCount == 1) {
+            return
+        }
+
+        select.remove(select.options.selectedIndex)
+
+    }
+
+    function save_character() {
+
+        document.getElementById('character-list').options[document.getElementById('character-list').options.selectedIndex].innerHTML =  document.getElementById('character-name').value
+
+        // This variable stores all the data.
+        let data = "Character: " + document.getElementById("character-name").value + " " +
+                                   document.getElementById("character-alignment").value + " " +
+                                   document.getElementById("character-class").value + " " +
+                                   document.getElementById("character-level").value
+
+        // Convert the text to BLOB.
+        const textToBLOB = new Blob([data], { type: 'text/plain' });
+        const sFileName = document.getElementById("character-name").value;	   // The file to save the data.
+
+        let newLink = document.createElement("a");
+        newLink.download = sFileName;
+
+        if (window.webkitURL != null) { 
+            newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+        }
+        else {
+            newLink.href = window.URL.createObjectURL(textToBLOB);
+            newLink.style.display = "none";
+            document.body.appendChild(newLink);
+        }
+
+        newLink.click(); 
+
+}
+
+</script>
+    
+</body>
+
+</html>
